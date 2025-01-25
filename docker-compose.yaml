@@ -1,0 +1,48 @@
+services:
+  pgadmin:
+    image: dpage/pgadmin4:8.14.0
+    restart: "no"
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+      - ./docker/pgadmin/pgpass:/pgadmin4/pgpass
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/misc/ping || exit -1
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+    entrypoint: /bin/sh -c "cp -f /pgadmin4/pgpass /var/lib/pgadmin; chmod 600 /var/lib/pgadmin/pgpass; /entrypoint.sh;"
+  app:
+    image: myapp:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/otusdatabase
+      SPRING_DATASOURCE_USERNAME: kate
+      SPRING_DATASOURCE_PASSWORD: kateqwerty
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+  db:
+    image: postgres:latest
+    restart: "no"
+    environment:
+      POSTGRES_DB: otusdatabase
+      POSTGRES_USER: kate
+      POSTGRES_PASSWORD: kateqwerty
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_volume:/var/lib/postgresql/data/:rw
+volumes:
+  pgadmin_data:
+  db_volume:
