@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Все заметки</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h2>Список заметок</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Заголовок</th>
+            <th>Содержимое</th>
+            <th>Дата создания</th>
+<!--            <th>Дата редактирования</th>-->
+            <th>Автор</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="note : ${notes}">
+            <td th:text="${note.title}">Заголовок</td>
+            <td th:text="${note.content}">Содержимое</td>
+            <td th:text="${#temporals.format(note.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Дата создания</td>
+<!--            <td th:text="${#dates.format(note.createdAt, 'dd.MM.yyyy HH:mm')}">Дата создания</td>-->
+<!--            <td th:text="${note.author.username}">Автор</td>-->
+            <td th:text="${note.author != null ? note.author.username : 'Unknown Author'}">Автор</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -29,11 +29,11 @@ public class UserService implements UserDetailsService {
         this.objectMapper = objectMapper;
     }
 
-    public List<User> getAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User getOne(Long id) {
+    public User findOne(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity with id `%s` not found".formatted(id)));
@@ -45,11 +45,11 @@ public class UserService implements UserDetailsService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь с username `%s` not found".formatted(username)));
     }
 
-    public List<User> getMany(List<Long> ids) {
+    public List<User> findMany(List<Long> ids) {
         return userRepository.findAllById(ids);
     }
 
-    public User create(User user) {
+    public User save(User user) {
         return userRepository.save(user);
     }
 

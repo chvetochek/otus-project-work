@@ -25,13 +25,13 @@ public class NoteViewController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
         model.addAttribute("notes", userService.findByUsername(currentUsername).getNotes());
-        return "index"; // Название шаблона без расширения .html
+        return "index";
     }
 
     @GetMapping("/notes/new")
     public String showNewNoteForm(Model model) {
         model.addAttribute("note", new Note());
-        return "new-note"; // Название шаблона для формы добавления заметки
+        return "new-note";
     }
 
     @PostMapping("/notes/create")
@@ -50,13 +50,16 @@ public class NoteViewController {
     public String showEditNoteForm(@PathVariable Long id, Model model) {
         Note note = noteService.findById(id);
         model.addAttribute("note", note);
-        return "edit-note"; // Название шаблона для формы редактирования заметки
+        return "edit-note";
     }
 
-    @PostMapping("/notes/edit")
-    public String editNote(@ModelAttribute Note note) {
+    @PatchMapping("/notes/{id}")
+    public String editNote(@PathVariable Long id, @ModelAttribute Note note) {
+        Note oldNote = noteService.findById(id);
+        oldNote.setTitle(note.getTitle());
+        oldNote.setContent(note.getContent());
         //????? добавить поле даты последнего редактирования
-        noteService.save(note);
+        noteService.save(oldNote);
         return "redirect:/";
     }
 

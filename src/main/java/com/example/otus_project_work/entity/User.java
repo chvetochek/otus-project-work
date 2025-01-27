@@ -2,6 +2,7 @@ package com.example.otus_project_work.entity;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -25,9 +26,16 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Note> notes;
 
+    public Role getRole() {
+        return role;
+    }
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority((role.name())));
     }
 
     @Override
@@ -82,5 +90,9 @@ public class User implements UserDetails {
 
     public void setNotes(Set<Note> notes) {
         this.notes = notes;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

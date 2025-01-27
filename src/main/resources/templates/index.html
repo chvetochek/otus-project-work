@@ -13,7 +13,7 @@
             <p class="card-text" th:text="${note.content}"></p>
 
             <a th:href="@{/notes/edit/{id}(id=${note.id})}" class="btn btn-primary mt-3">Редактировать</a>
-            <form th:action="@{/notes/delete/{id}(id=${note.id})}" method="post">
+            <form th:action="@{/notes/delete/{id}(id=${note.id})}" th:method="post">
                 <button type="submit" class="btn btn-primary mt-3">Удалить заметку</button>
             </form>
         </div>

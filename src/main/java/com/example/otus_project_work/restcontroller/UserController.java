@@ -20,22 +20,22 @@ public class UserController {
 
     @GetMapping
     public List<User> getAll() {
-        return userService.getAll();
+        return userService.findAll();
     }
 
     @GetMapping("/{id}")
     public User getOne(@PathVariable Long id) {
-        return userService.getOne(id);
+        return userService.findOne(id);
     }
 
     @GetMapping("/by-ids")
     public List<User> getMany(@RequestParam List<Long> ids) {
-        return userService.getMany(ids);
+        return userService.findMany(ids);
     }
 
     @PostMapping
     public User create(@RequestBody User user) {
-        return userService.create(user);
+        return userService.save(user);
     }
 
     @PatchMapping("/{id}")

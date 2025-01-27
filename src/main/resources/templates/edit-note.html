@@ -7,7 +7,7 @@
 <body>
 <div class="container">
     <h1 class="mt-5">Редактировать заметку</h1>
-    <form action="#" th:action="@{/notes/edit}" th:object="${note}" method="post">
+    <form th:action="@{/notes/{id}(id=${note.id})}" th:object="${note}" th:method="patch">
         <div class="form-group">
             <label for="title">Заголовок:</label>
             <input type="text" id="title" th:field="*{title}" class="form-control" required>
