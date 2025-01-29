@@ -1,4 +1,4 @@
-INSERT INTO user_ (username, password, role) VALUES
-('kate1', '{noop}kate', 'ROLE_USER'),
-('kate2', '{noop}kate', 'ROLE_ADMIN'),
-('kate3', '{noop}kate', 'ROLE_USER');
+INSERT INTO user_ (username, password, role, name, lastname) VALUES
+('kate', '{noop}kate', 'ROLE_USER', 'Екатерина', 'Дьяконова'),
+('admin', '{noop}admin', 'ROLE_ADMIN', 'Админ', 'Админ'),
+('mike', '{noop}mike', 'ROLE_USER', 'Михаил', 'Петров');

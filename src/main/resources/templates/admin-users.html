@@ -12,13 +12,14 @@
         <tr>
             <th>Заголовок</th>
             <th>Содержимое</th>
-<!--            <th>Количество заметок</th>-->
+            <th>Количество заметок</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
             <td th:text="${user.username}">Заголовок</td>
             <td th:text="${user.password}">Содержимое</td>
+            <td th:text="${user.notes != null ? user.notes.size() : 0}">Количество заметок</td>
         </tr>
         </tbody>
     </table>

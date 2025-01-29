@@ -4,12 +4,14 @@ import com.example.otus_project_work.entity.Note;
 import com.example.otus_project_work.service.NoteService;
 import com.example.otus_project_work.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
@@ -67,5 +69,17 @@ public class NoteViewController {
     public String deleteNote(@PathVariable Long id) {
         noteService.delete(id);
         return "redirect:/";
+    }
+
+
+    @GetMapping("/notes/{id}")
+    //@PreAuthorize("hasRole('USER') and @noteService.findById(#id).authorId == authentication.principal.id")
+    public String getNote(@PathVariable Long id,  Model model) {
+        Note note = noteService.findById(id);
+        if (note == null) {
+            return "redirect:/notes"; // Или страница с ошибкой
+        }
+        model.addAttribute("note", note);
+        return "note";
     }
 }
