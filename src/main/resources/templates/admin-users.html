@@ -32,7 +32,7 @@
             </td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.lastname}"></td>
-            <td th:text="${user.notes != null ? user.notes.size() : 0}"></td>
+            <td th:text="${user.notes.size()}"></td>
         </tr>
         </tbody>
     </table>

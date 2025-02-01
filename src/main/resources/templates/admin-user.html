@@ -16,11 +16,11 @@
         </div>
     </nav>
     <h1 th:text="'Пользователь: ' + ${user.username}"></h1>
-    <h3>Информация о пользователе</h3>
+    <h4>Информация о пользователе</h4>
     <p><strong>Имя:</strong> <span th:text="${user.name}"></span></p>
     <p><strong>Фамилия:</strong> <span th:text="${user.lastname}"></span></p>
     <h3>Заметки</h3>
-    <table class="table">
+    <table class="table" th:if="${user.notes.size() > 0}">
         <thead>
         <tr>
             <th>Заголовок</th>
@@ -40,6 +40,7 @@
         </tr>
         </tbody>
     </table>
+    <p th:if="${user.notes.size() == 0}">Нет заметок</p>
 </div>
 </body>
 </html>

@@ -69,9 +69,6 @@ public class NoteViewController {
     @PreAuthorize("hasRole('ADMIN') or @noteService.findById(#id).author.id == authentication.principal.id")
     public String getNote(@PathVariable Long id,  Model model) {
         Note note = noteService.findById(id);
-//        if (note == null) {
-//            return
-//        }
         model.addAttribute("note", note);
         return "note";
     }
