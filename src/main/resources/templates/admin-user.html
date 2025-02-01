@@ -6,24 +6,37 @@
 </head>
 <body>
 <div class="container">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}" class="navbar-brand">Главная</a>
+            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/}" class="navbar-brand">Главная</a>
+            <form class="d-flex" action="@{/logout}" method="post" th:action="@{/logout}">
+                <button type="submit" class="btn btn-outline-secondary">Выйти</button>
+            </form>
+        </div>
+    </nav>
     <h1 th:text="'Пользователь: ' + ${user.username}"></h1>
     <h3>Информация о пользователе</h3>
-    <p><strong>Пароль:</strong> <span th:text="${user.password}"></span></p>
-
+    <p><strong>Имя:</strong> <span th:text="${user.name}"></span></p>
+    <p><strong>Фамилия:</strong> <span th:text="${user.lastname}"></span></p>
     <h3>Заметки</h3>
     <table class="table">
         <thead>
         <tr>
             <th>Заголовок</th>
             <th>Содержимое</th>
-            <th>Дата</th>
+            <th>Дата создания</th>
+            <th>Дата последнего редактирования</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="note : ${user.notes}">
-            <td th:text="${note.title}"></td>
+            <td>
+                <a th:href="@{/notes/{id}(id=${note.id})}" th:text="${note.title}"></a>
+            </td>
             <td th:text="${note.content}"></td>
-            <td th:text="${#temporals.format(note.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${#temporals.format(note.createdAt, 'HH:mm:ss dd-MM-yyyy')}"></td>
+            <td th:text="${note.editedAt != null ? #temporals.format(note.editedAt, 'HH:mm:ss dd-MM-yyyy') : 'нет правок'}"></td>
         </tr>
         </tbody>
     </table>

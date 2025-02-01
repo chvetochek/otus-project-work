@@ -6,19 +6,34 @@
 </head>
 <body>
 <div class="container">
-    <form action="@{/logout}" method="post" th:action="@{/logout}">
-        <button type="submit">Logout</button>
-    </form>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}" class="navbar-brand">Главная</a>
+            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/}" class="navbar-brand">Главная</a>
+            <form class="d-flex" action="@{/logout}" method="post" th:action="@{/logout}">
+                <button type="submit" class="btn btn-outline-secondary">Выйти</button>
+            </form>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-start">
+
+        </div>
+    </div>
     <h1 class="mt-5">Все заметки</h1>
     <div th:each="note : ${notes}" class="card mt-3">
         <div class="card-body">
             <h5 class="card-title" th:text="${note.title}"></h5>
             <p class="card-text" th:text="${note.content}"></p>
-            <a th:href="@{/notes/{id}(id=${note.id})}" class="btn btn-primary mt-3">Подробнее</a>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a th:href="@{/notes/{id}(id=${note.id})}" class="btn btn-primary mt-3">Подробнее</a>
+                </div>
+                <small class="text-body-secondary" th:text="${note.editedAt == null ? 'Дата создания: ' + #temporals.format(note.createdAt, 'HH:mm:ss MMM dd, yyyy') : 'Дата последнего редактирования: ' + #temporals.format(note.editedAt, 'HH:mm:ss dd-MM-yyyy')}"></small>
+            </div>
         </div>
     </div>
     <a href="/notes/new" class="btn btn-primary mt-3">Добавить заметку</a>
-
 </div>
 </body>
 </html>

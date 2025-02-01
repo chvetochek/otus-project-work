@@ -26,15 +26,16 @@ public class Note {
     @Column(name = "content", nullable = false)
     private String content;
 
+    @OrderBy()
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "edited_at")
+    private LocalDateTime editedAt;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
-
-    @Column(name = "edited_at")
-    private LocalDateTime editedAt;
 
     public LocalDateTime getEditedAt() {
         return editedAt;

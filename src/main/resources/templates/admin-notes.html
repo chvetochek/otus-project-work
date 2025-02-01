@@ -6,6 +6,15 @@
 </head>
 <body>
 <div class="container">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}" class="navbar-brand">Главная</a>
+            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/}" class="navbar-brand">Главная</a>
+            <form class="d-flex" action="@{/logout}" method="post" th:action="@{/logout}">
+                <button type="submit" class="btn btn-outline-secondary">Выйти</button>
+            </form>
+        </div>
+    </nav>
     <h2>Список заметок</h2>
     <table class="table table-bordered">
         <thead>
@@ -13,18 +22,21 @@
             <th>Заголовок</th>
             <th>Содержимое</th>
             <th>Дата создания</th>
-<!--            <th>Дата редактирования</th>-->
+            <th>Дата последнего редактирования</th>
             <th>Автор</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="note : ${notes}">
-            <td th:text="${note.title}">Заголовок</td>
-            <td th:text="${note.content}">Содержимое</td>
-            <td th:text="${#temporals.format(note.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Дата создания</td>
-<!--            <td th:text="${#dates.format(note.createdAt, 'dd.MM.yyyy HH:mm')}">Дата создания</td>-->
-<!--            <td th:text="${note.author.username}">Автор</td>-->
-            <td th:text="${note.author != null ? note.author.username : 'Unknown Author'}">Автор</td>
+            <td>
+                <a th:href="@{/notes/{id}(id=${note.id})}" th:text="${note.title}"></a>
+            </td>
+            <td th:text="${note.content}"></td>
+            <td th:text="${#temporals.format(note.createdAt, 'HH:mm:ss dd-MM-yyyy')}"></td>
+            <td th:text="${note.editedAt != null ? #temporals.format(note.editedAt, 'HH:mm:ss dd-MM-yyyy') : 'нет правок'}"></td>
+            <td>
+                <a th:href="@{/admin/users/{id}(id=${note.author.id})}" th:text="${note.author.lastname}">Автор</a>
+            </td>
         </tr>
         </tbody>
     </table>

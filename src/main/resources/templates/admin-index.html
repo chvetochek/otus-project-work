@@ -6,8 +6,17 @@
 </head>
 <body>
 <div class="container">
-    <a href="/notes/new" class="btn btn-primary mt-3">Все заметки</a>
-    <a href="/notes/new" class="btn btn-primary mt-3">Все пользователи</a>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}" class="navbar-brand">Главная</a>
+            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/}" class="navbar-brand">Главная</a>
+            <form class="d-flex" action="@{/logout}" method="post" th:action="@{/logout}">
+                <button type="submit" class="btn btn-outline-secondary">Выйти</button>
+            </form>
+        </div>
+    </nav>
+    <a href="/admin/notes" class="btn btn-primary mt-3">Все заметки</a>
+    <a href="/admin/users" class="btn btn-primary mt-3">Все пользователи</a>
 </div>
 </body>
 </html>

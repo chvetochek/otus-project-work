@@ -5,17 +5,15 @@ import com.example.otus_project_work.service.NoteService;
 import com.example.otus_project_work.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
-//@RequestMapping("/")
 public class NoteViewController {
     @Autowired
     private NoteService noteService;
@@ -23,10 +21,8 @@ public class NoteViewController {
     private UserService userService;
 
     @GetMapping("/")
-    public String getAllNotes(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        model.addAttribute("notes", userService.findByUsername(currentUsername).getNotes());
+    public String getAllNotes(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("notes", userService.findByUsername(userDetails.getUsername()).getNotes());
         return "index";
     }
 
@@ -37,16 +33,13 @@ public class NoteViewController {
     }
 
     @PostMapping("/notes/create")
-    public String createNote(@ModelAttribute Note note) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        var currentUser = userService.findByUsername(currentUsername);
+    public String createNote(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute Note note) {
+        var currentUser = userService.findByUsername(userDetails.getUsername());
         note.setAuthor(currentUser);
         note.setCreatedAt(LocalDateTime.now());
         noteService.save(note);
         return "redirect:/";
     }
-
 
     @GetMapping("/notes/edit/{id}")
     public String showEditNoteForm(@PathVariable Long id, Model model) {
@@ -60,12 +53,12 @@ public class NoteViewController {
         Note oldNote = noteService.findById(id);
         oldNote.setTitle(note.getTitle());
         oldNote.setContent(note.getContent());
-        //????? добавить поле даты последнего редактирования
+        oldNote.setEditedAt(LocalDateTime.now());
         noteService.save(oldNote);
         return "redirect:/";
     }
 
-    @PostMapping("/notes/delete/{id}")//???Переделать на DELETEMAPPING
+    @DeleteMapping("/notes/delete/{id}")
     public String deleteNote(@PathVariable Long id) {
         noteService.delete(id);
         return "redirect:/";
@@ -73,12 +66,12 @@ public class NoteViewController {
 
 
     @GetMapping("/notes/{id}")
-    //@PreAuthorize("hasRole('USER') and @noteService.findById(#id).authorId == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or @noteService.findById(#id).author.id == authentication.principal.id")
     public String getNote(@PathVariable Long id,  Model model) {
         Note note = noteService.findById(id);
-        if (note == null) {
-            return "redirect:/notes"; // Или страница с ошибкой
-        }
+//        if (note == null) {
+//            return
+//        }
         model.addAttribute("note", note);
         return "note";
     }

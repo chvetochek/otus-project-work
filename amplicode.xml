@@ -3,4 +3,13 @@
   <component name="AmplicodeJpaPluginProjectSettings">
     <option name="lastSelectedLanguage" value="Java" />
   </component>
+  <component name="AmplicodePersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="otus-project-work.main" name="Default">
+        <packages>
+          <package value="com.example.otus_project_work" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
 </project>

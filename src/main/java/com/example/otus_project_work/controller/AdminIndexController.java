@@ -3,10 +3,12 @@ package com.example.otus_project_work.controller;
 import com.example.otus_project_work.service.NoteService;
 import com.example.otus_project_work.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 public class AdminIndexController {
     @Autowired
@@ -16,7 +18,7 @@ public class AdminIndexController {
     private UserService userService;
 
     @GetMapping("/admin")
-    public String index(Model model) {
+    public String index() {
         return "admin-index";
     }
 
