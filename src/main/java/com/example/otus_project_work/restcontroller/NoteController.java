@@ -33,7 +33,7 @@ public class NoteController {
         return noteService.findAllById(ids);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public Note create(@RequestBody Note note) {
         return noteService.save(note);
     }

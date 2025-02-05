@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@PreAuthorize("hasRole('ADMIN')")
 @Controller
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminIndexController {
     @Autowired
     private NoteService noteService;

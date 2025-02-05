@@ -32,7 +32,7 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 return http.authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/").hasRole("USER")
+                                .requestMatchers("/", "/notes/**").hasRole("USER")
                                 .anyRequest().authenticated())
                 .formLogin((form) -> form
                                 .successHandler(new CustomAuthenticationSuccessHandler())
