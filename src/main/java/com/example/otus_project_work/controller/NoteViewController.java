@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @Controller
+@PreAuthorize("hasRole('USER')")
 public class NoteViewController {
     @Autowired
     private NoteService noteService;

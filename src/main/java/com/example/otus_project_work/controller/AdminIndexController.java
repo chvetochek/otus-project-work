@@ -36,7 +36,7 @@ public class AdminIndexController {
 
     @GetMapping("/admin/users/{id}")
     public String getUser(@PathVariable Long id,  Model model) {
-        model.addAttribute("user", userService.findOne(id));
+        model.addAttribute("user", userService.findById(id));
         return "admin-user";
     }
 }
