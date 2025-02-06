@@ -5,6 +5,7 @@ import com.example.otus_project_work.entity.NoteDto;
 import com.example.otus_project_work.entity.NoteMapper;
 import com.example.otus_project_work.service.NoteService;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/notes")
+@PreAuthorize("hasRole('USER')")
 public class NoteRestController {
 
     private final NoteService noteService;

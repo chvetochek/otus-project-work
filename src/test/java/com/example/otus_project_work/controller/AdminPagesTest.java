@@ -16,7 +16,6 @@ import java.util.Set;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -35,7 +34,7 @@ class AdminPagesTest {
 
     @DisplayName("Пользователь может зайти на главную страницу admin")
     @Test
-    @WithMockUser()
+    @WithMockUser
     void shouldOpenAdminIndexPage() throws Exception {
         mockMvc.perform(get("/admin"))
                 .andExpect(status().isOk())
@@ -44,7 +43,7 @@ class AdminPagesTest {
 
     @DisplayName("Пользователь может зайти на страницу просмотра всех заметок")
     @Test
-    @WithMockUser()
+    @WithMockUser
     void shouldOpenAdminNotesPage() throws Exception {
         mockMvc.perform(get("/admin/notes"))
                 .andExpect(status().isOk())
@@ -53,7 +52,7 @@ class AdminPagesTest {
 
     @DisplayName("Пользователь может зайти на страницу просмотра всех пользователей")
     @Test
-    @WithMockUser()
+    @WithMockUser
     void shouldOpenAdminUsersPage() throws Exception {
         mockMvc.perform(get("/admin/users"))
                 .andExpect(status().isOk())
@@ -62,12 +61,12 @@ class AdminPagesTest {
 
     @DisplayName("Пользователь может зайти на страницу просмотра всех пользователей")
     @Test
-    @WithMockUser()
+    @WithMockUser
     void shouldOpenAdminUserPage() throws Exception {
         User user = new User();
         user.setUsername("user");
         user.setNotes(Set.of(new Note()));
-        when(userService.findOne(1L)).thenReturn(user);
+        when(userService.findById(1L)).thenReturn(user);
         mockMvc.perform(get("/admin/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin-user"));

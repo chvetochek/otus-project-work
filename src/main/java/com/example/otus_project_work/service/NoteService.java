@@ -54,28 +54,11 @@ public class NoteService {
         return noteRepository.save(note);
     }
 
-    public List<Long> patchMany(List<Long> ids, JsonNode patchNode) throws IOException {
-        Collection<Note> notes = noteRepository.findAllById(ids);
-
-        for (Note note : notes) {
-            objectMapper.readerForUpdating(note).readValue(patchNode);
-        }
-
-        List<Note> resultNotes = noteRepository.saveAll(notes);
-        return resultNotes.stream()
-                .map(Note::getId)
-                .toList();
-    }
-
     public Note delete(Long id) {
         Note note = noteRepository.findById(id).orElse(null);
         if (note != null) {
             noteRepository.delete(note);
         }
         return note;
-    }
-
-    public void deleteMany(List<Long> ids) {
-        noteRepository.deleteAllById(ids);
     }
 }

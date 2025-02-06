@@ -45,9 +45,6 @@ public class UserService implements UserDetailsService {
     public User patch(Long id, JsonNode patchNode) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь с id `%s` не найден".formatted(id)));
-
-//        objectMapper.readerForUpdating(user).readValue(patchNode);
-
         return userRepository.save(user);
     }
 
@@ -57,10 +54,6 @@ public class UserService implements UserDetailsService {
             userRepository.delete(user);
         }
         return user;
-    }
-
-    public void deleteMany(List<Long> ids) {
-        userRepository.deleteAllById(ids);
     }
 
     @Override
